@@ -1,65 +1,84 @@
 <script setup>
 import { useMyState } from '../stores/pinia';
 import AddTask from './AddTask.vue';
+import SwitchButton from './SwitchButton.vue';
+import { updateLocalTodo } from '../services/localStorage.js';
 
 const myState = useMyState();
 
-//Methods
-const close = (status) => {
-  status ? myState.statusSuccess = '' : myState.statusError = '' ;
+const deleteTodo = (taskVal) => {
+  //Get the index of the passed object
+  const index = myState.taskLists.indexOf(taskVal);
+
+  //Remove the object in array state
+  myState.taskLists.splice(index, 1);
+
+  //update local storage
+  updateLocalTodo(myState.taskLists);
 }
 
-const showCloseAddForm = () => {
-  myState.addComptToggler = !myState.addComptToggler
+const deleteAllTodo = (message) => {
+  if(confirm(message)){
+    //Clear array state
+    myState.taskLists = [];
+    //update local storage
+    updateLocalTodo(myState.taskLists);
+  }
+  return;
 }
-
 
 </script>
 <template>
-  
-<div v-if="myState.statusError" class="flex flex-wrap flex-col md:flex-row w-full justify-center">
-    
-    <div class="relative basis-1/2 border border-red-500 shadow rounded-md px-2 py-2 w-full" >
-      <span class="absolute top-0 right-0 px-2 text-black cursor-pointer" @click="close(0)">x</span>
-      <p class="text-red-500">{{myState.statusError}} </p>
-    </div>
-  
-</div>
 
-<div v-if="myState.statusSuccess" class="flex flex-wrap flex-col md:flex-row w-full justify-center">
-  
-    <div class="relative basis-1/2 border border-blue-300 shadow rounded-md px-2 py-2 w-full" @click="close(1)">
-      <span class="absolute top-0 right-0 px-2 text-black cursor-pointer" @click="close(1)">x</span>
-      <p class="text-blue-300">{{myState.statusSuccess}} </p>
-    </div>
-    
-</div>
+<div class="flex w-full justify-center p-5">
+    <!--Container-->
+    <div class="w-full md:w-1/2 p-7 h-full rounded-md bg-slate-100">
 
+      <div class="flex flex-wrap">
+        <div class="w-5/6 font-sans text-3xl">
+          <p>Todo App</p>
+        </div>
+        <div class="w-1/6 flex justify-end">
+          <SwitchButton />
+        </div>
+      </div>
 
-<div class="flex flex-wrap flex-col md:flex-row w-full justify-center">
-    <div :class="`rounded-md shadow-md bg-slate-100 basis-1/2 py-4 px-4 flex flex-col gap-2 relative`">
-      
-      <div class="w-full bg-slate-100 h-full overflow-auto mb-10">
+      <!--Form-->
+        <AddTask />
+      <!--End Form-->
 
-        <div v-if="myState.taskLists.length > 0">
-          <div class="px-2 py-2" v-for="task in myState.taskLists" :key="task">
-            <input type="checkbox" class="checked:bg-blue-500"/>
-            <label :class="`text-black px-2 py-2 ${ task.done ? 'line-through' : '' }`">{{ task.name }} </label>
+      <!--List-->
+      <div class="w-full flex flex-wrap justify-center mt-5" v-for="task in myState.taskLists" :key="task">
+
+          <!--Item-->
+          <div class="w-full mt-2 flex justify-center bg-slate-200 shadow-md rounded-md">
+            <div class="w-5/6 p-3 flex justify-start items-center">
+              <p>{{ task.name }}</p>
+            </div>
+            <div class="w-1/6">
+              <button class="bg-red-300 hover:bg-red-500 w-full h-full flex justify-center items-center rounded-md" @click="deleteTodo(task)">
+                <img class="w-5/6 lg:w-1/2" src="@/assets/images/delete.svg" />
+              </button>
+            </div>
+          </div>
+          <!--End Item-->
+
+        </div>
+        <!--End List-->
+
+        <div class="flex mt-10 justify-center">
+          <div class="w-2/3 md:w-5/6 flex justify-start items-center">
+            <p>You have {{myState.taskLists.length}} pending tasks</p>
+          </div>
+          <div class="w-1/3 md:w-1/6">
+            <button class="bg-sky-300 hover:bg-sky-500 w-full p-2 rounded-sm" @click="deleteAllTodo('Are you sure you want to delete all tasks?')">
+                Clear All
+            </button>
           </div>
         </div>
-        <div v-else class="flex justify-center">
-          <h3>No tasks found</h3>
-        </div>
-        
-        <!--Load Addtask Component-->
-        <AddTask />
-      </div>
 
-      <div class="flex justify-center absolute inset-x-0 -bottom-4">
-        <button @click="showCloseAddForm()" :class="`text-black bg-blue-300 w-1/2 p-2 mt-2 mb-2 ${!myState.addComptToggler ? 'bg-blue-200' : 'bg-red-500' }`" >{{ !myState.addComptToggler ? 'Add Task' :  'Close'}}</button>
-      </div>
-      
     </div>
-  </div>
+    <!--End Container-->
+</div>
   
 </template>

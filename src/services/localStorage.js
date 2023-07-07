@@ -2,7 +2,7 @@
     return localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')) : [];
   }
 
-  const addLocalTodo = async (insert) => {
+  const updateLocalTodo = async (insert) => {
     console.log('Send post data');
     console.log(insert)
     localStorage.setItem('todos', JSON.stringify(insert));
@@ -16,4 +16,4 @@
     localStorage.setItem('theme', JSON.stringify(val));
   }
   
-  export { getLocalData, addLocalTodo, defTheme, updateTheme }
+  export { getLocalData, defTheme, updateTheme, updateLocalTodo }

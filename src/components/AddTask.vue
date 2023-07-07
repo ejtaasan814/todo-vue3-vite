@@ -1,32 +1,31 @@
 <script setup>
 import { ref } from 'vue'
 import { useMyState } from '../stores/pinia';
-import { addLocalTodo } from '../services/localStorage.js';
+import { updateLocalTodo } from '../services/localStorage.js';
 
 const myState = useMyState();
 
 //Reactive data
 //task.value to get the value
 const tasks = ref({
-  name: null,
-  description:null
+  name: null
 })
 
 
 //Methods
 const saveTask = async() => {
-  const { name, description} = tasks.value;
+  const { name } = tasks.value;
   const insert = {
     'name': name,
-    'description' : description,
     'done' : false,
     'createdAt': new Date()
   }
 
-  console.log(insert);
+  //Add the object inside array state
   myState.taskLists.push(insert);
   
-  addLocalTodo(myState.taskLists)
+  //update local storage
+  updateLocalTodo(myState.taskLists)
   myState.addFlag++
 }
 
@@ -35,22 +34,26 @@ const saveTask = async() => {
 
 <template>
   <div>
-    <form @submit.prevent="saveTask()" v-show="myState.addComptToggler">
-      <div class="bg-slate-200 p-4 shadow-2xl">
-
-        <div class="flex justify-start max-w-sm w-full mx-auto">
-          <input type="text" class="border border-blue-300 shadow rounded-md p-2 max-w-sm w-full mx-auto" name="todo_name" placeholder="Name" v-model="tasks.name" />
+    <form @submit.prevent="saveTask()">
+      <!--Form-->
+      <div class="flex flex-wrap mt-4">
+        <div class="w-5/6 flex justify-center">
+          <input 
+            type="text"
+            name="tasks.name"
+            class="p-5 w-5/6 focus:outline-none"
+            placeholder="Add your new todo"
+            v-model="tasks.name"
+            required
+            >
         </div>
-
-        <div class="flex justify-start max-w-sm w-full mx-auto mt-2">
-          <input type="text" class="border border-blue-300 shadow rounded-md p-2 max-w-sm w-full mx-auto" name="todo_description" placeholder="Description" v-model="tasks.description" />
+        <div class="w-1/6">
+          <button class="bg-sky-500 p-2 h-full w-full flex justify-center items-center rounded-md hover:bg-sky-700">
+            <img class="w-5/6 md:w-5/6 lg:w-1/2" src="@/assets/images/plus.svg" />
+          </button>
         </div>
-
-        <div class="flex justify-end max-w-sm w-full mx-auto">
-          <button type="submit" class="text-dark bg-blue-300 p-2 px-10 mt-2" >Save</button>
-        </div>
-        
       </div>
+      <!--End Form-->
     </form>
   </div>
 </template>

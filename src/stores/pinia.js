@@ -9,7 +9,6 @@ export const useMyState =  defineStore({
     statusError: '',
     statusSuccess: '',
     addFlag:0,
-    addComptToggler: false,
     theme: false
   }),
 

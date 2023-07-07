@@ -2,8 +2,7 @@
 import { onMounted, watch} from 'vue'
 import { getLocalData, defTheme } from './services/localStorage.js';
 import { useMyState } from './stores/pinia';
-import ListComp from './components/ListComp.vue';
-import NavMenu from './components/NavMenu.vue';
+import MainComp from './components/layout/MainComp.vue';
 
 const myState = useMyState();
 
@@ -14,7 +13,8 @@ const getTodos = () =>{
 
     //Get the default theme on localStorage
     myState.theme = defTheme();
-    console.log(myState.theme);
+    
+    console.log('mounted');
 }
 
 // method for sort
@@ -31,7 +31,6 @@ const todoSort = (data) => {
   });
   return arr;
 }
-
 
 
 //Watchers
@@ -52,9 +51,6 @@ onMounted(() => {
 
 <template>
   <main>
-    <NavMenu />
-    <div :class="`flex justify-center w-full h-screen flex-col ${myState.getTheme}`">
-      <ListComp />
-    </div>
+    <MainComp />
   </main>
 </template>
