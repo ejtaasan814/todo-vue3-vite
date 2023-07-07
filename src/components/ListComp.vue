@@ -74,7 +74,7 @@ const deleteAllTodo = (message) => {
             <button 
               class="bg-sky-300 hover:bg-sky-500 w-full p-2 rounded-sm" 
               @click="deleteAllTodo('Are you sure you want to delete all tasks?')"
-              :disabled="myState.taskLists.length > 0 ? false: true"
+              :disabled="(myState.taskLists.length > 0) ? false: true"
               >
                 Clear All
             </button>
