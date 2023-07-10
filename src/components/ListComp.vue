@@ -56,7 +56,7 @@ const deleteAllTodo = (message) => {
               <p>{{ task.name }}</p>
             </div>
             <div class="w-1/6 flex justify-end">
-              <button class="w-1/2 bg-red-300 hover:bg-red-500 w-full h-full flex justify-center items-center rounded-md" @click="deleteTodo(task)">
+              <button class="w-1/2 bg-red-300 hover:bg-red-500 h-full flex justify-center items-center rounded-md" @click="deleteTodo(task)">
                 <img class="scale-50" src="@/assets/images/delete.svg" />
               </button>
             </div>
