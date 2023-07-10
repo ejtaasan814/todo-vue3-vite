@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, watch} from 'vue'
+import { ref,onBeforeMount, onMounted, watch} from 'vue'
 import { getLocalData, defTheme } from './services/localStorage.js';
 import { useMyState } from './stores/pinia';
 import MainComp from './components/layout/MainComp.vue';
@@ -13,7 +13,6 @@ const getTodos = () =>{
 
     //Get the default theme on localStorage
     myState.theme = defTheme();
-    
     console.log('mounted');
 }
 

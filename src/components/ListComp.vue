@@ -48,16 +48,16 @@ const deleteAllTodo = (message) => {
       <!--End Form-->
 
       <!--List-->
-      <div class="w-full flex flex-wrap justify-center mt-5" v-for="task in myState.taskLists" :key="task">
+      <div class="w-full flex flex-wrap justify-center mt-5">
 
           <!--Item-->
-          <div class="w-full mt-2 flex justify-center bg-slate-200 shadow-md rounded-md">
+          <div :class="`transition ease-in-out delay-700 duration-300 w-full flex justify-center bg-slate-200 shadow-md rounded-md mt-2`" v-for="task in myState.taskLists" :key="task">
             <div class="w-5/6 p-3 flex justify-start items-center">
               <p>{{ task.name }}</p>
             </div>
-            <div class="w-1/6">
-              <button class="bg-red-300 hover:bg-red-500 w-full h-full flex justify-center items-center rounded-md" @click="deleteTodo(task)">
-                <img class="w-5/6 lg:w-1/2" src="@/assets/images/delete.svg" />
+            <div class="w-1/6 flex justify-end">
+              <button class="w-1/2 bg-red-300 hover:bg-red-500 w-full h-full flex justify-center items-center rounded-md" @click="deleteTodo(task)">
+                <img class="scale-50" src="@/assets/images/delete.svg" />
               </button>
             </div>
           </div>
